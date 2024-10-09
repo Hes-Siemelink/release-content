@@ -1,6 +1,6 @@
 # Exported from:        http://localhost:5516/
 # Release version:      24.3.0-1009.113
-# Date created:         Wed Oct 09 12:48:29 GMT 2024
+# Date created:         Wed Oct 09 13:29:33 GMT 2024
 
 ---
 apiVersion: xl-release/v1
@@ -16,9 +16,9 @@ spec:
   phases:
   - phase: Input
     tasks:
-    - name: Fetch details
+    - name: Get details
       type: xlrelease.ScriptTask
-      description: Fetches details about target server.
+      description: Getting details of the deployment server.
       script: |-
         statusWebhookEventSource = configurationApi.getConfiguration("${statusWebhookEventSourceId}")
         sourceServer = statusWebhookEventSource["sourceServer"]
@@ -26,6 +26,7 @@ spec:
         releaseVariables['targetServerTitle'] = sourceServer.title
         releaseVariables['targetServerUrl'] = sourceServer.url
         releaseVariables['statusWebhookEventSourceFolderId'] = statusWebhookEventSource.folderId
+        releaseVariables['liveDeploymentConfigurationName'] = sourceServer.title + " deployments"
 
         if "${liveDeploymentConfigurationId}":
           liveDeploymentConfiguration = configurationApi.getConfiguration("${liveDeploymentConfigurationId}")
@@ -35,26 +36,32 @@ spec:
     - name: Live deployment configuration name
       type: xlrelease.UserInputTask
       description: |-
-        Add a name for your live deployment configuration.
+        Enter a name for the deployment configuration.
 
-        **Target: ${targetServerTitle}**
-        ${targetServerUrl}
+        You will choose which deployments to listen to in the next steps.
+
+        **Deployment server:** [${targetServerTitle}](${targetServerUrl})
       variables:
       - liveDeploymentConfigurationName
-    - name: Live deployment configuration filter
+    - name: Select deployments
       type: xlrelease.UserInputTask
-      description: Input the Deploy application and environment filter to select applications
-        from the deployment server for live deployments.
+      description: |-
+        Please give the full path to the Applications and Environments on the Deploy server you want to listen to.
+
+        For example, with `Applications/My  folder/My app`, Release will listen to all deployments of **My app** in **My folder**. With `Environments/Targets/DEV`, Release will listen to all deployments to the **DEV** environment in the **Targets** folder.
+
+        You can also listen to multiple applications and environments by using regular expressions.
+
+        For example, `.*` listens to all applications or environments.
       variables:
       - liveDeploymentConfigurationApplication
       - liveDeploymentConfigurationEnvironment
     color: "#3d6c9e"
   - phase: Autoconfiguration
     tasks:
-    - name: Create or update live deployment configuration
+    - name: Update configuration
       type: xlrelease.ScriptTask
-      description: Creates a LiveDeploymentConfiguration with provided inputs and
-        adds it to the list of configs on selected StatusWebhookEventSource.
+      description: "Updating live deployment configuration for **${liveDeploymentConfigurationName}**"
       script: |-
         from com.xebialabs.xlrelease.domain import Configuration
         from com.xebialabs.deployit.plugin.api.reflect import Type
@@ -84,9 +91,9 @@ spec:
           statusWebhookEventSource.setProperty("liveDeploymentConfigs", liveDeploymentConfigs)
 
           configurationApi.updateConfiguration("${statusWebhookEventSourceId}", statusWebhookEventSource)
-    - name: Configure Deploy CIs
+    - name: Configure Digital.ai Deploy
       type: xlrelease.ScriptTask
-      description: Creates webhook configuration CIs on Deploy Server.
+      description: "Creating webhook configuration on **${targetServerTitle}**"
       script: |-
         from java.lang import Throwable
 
@@ -98,14 +105,15 @@ spec:
           if "Cannot find active remote runner" in str(e):
             raise Exception("Failed to find active remote runner for executing container script.")
           raise
-    - name: Check configured CIs
+    color: "#3d6c9e"
+  - phase: Final
+    tasks:
+    - name: Configuration successful
       type: xlrelease.Task
       description: |-
-        Successfully configured Live Deployment Configuration.
-
         ${autoconfigMessage}
 
-        [View in Deploy](${autoconfigUrl})
+        [View configuration in Deploy](${autoconfigUrl})
     color: "#3d6c9e"
   kind: WORKFLOW
   tags:
@@ -123,7 +131,7 @@ spec:
   - type: xlrelease.StringVariable
     key: liveDeploymentConfigurationName
     showOnReleaseStart: false
-    label: Name
+    label: Configuration name
     description: The name of live deployment configuration
   - type: xlrelease.StringVariable
     key: liveDeploymentConfigurationApplication
