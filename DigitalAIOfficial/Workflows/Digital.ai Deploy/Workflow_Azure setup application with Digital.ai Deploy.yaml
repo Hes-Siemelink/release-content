@@ -1,3 +1,7 @@
+# Exported from:        http://localhost:5516/
+# Release version:      24.3.0-1009.113
+# Date created:         Wed Oct 09 12:48:28 GMT 2024
+
 ---
 apiVersion: xl-release/v1
 kind: Templates
@@ -9,8 +13,8 @@ spec:
   description: "Seamlessly create an application in Digital.ai Deploy that can create\
     \ Azure resource groups, including its respective environment and infrastructure\
     \ setup."
-  scheduledStartDate: 2023-03-23T09:00:00+05:30
-  dueDate: 2023-03-23T10:00:00+05:30
+  scheduledStartDate: 2023-03-23T03:30:00Z
+  dueDate: 2023-03-23T04:30:00Z
   phases:
   - phase: Setup Infra and Env
     tasks:
@@ -93,7 +97,7 @@ spec:
       numberOfPollingTrials: 0
       displayStepLogs: true
       connectionRetries: 10
-    color: '#3d6c9e'
+    color: "#3d6c9e"
   - phase: Setup Application
     tasks:
     - name: Specify Application Name
@@ -152,30 +156,30 @@ spec:
             "location":"${resourcegroupLocation}",
             "resourceGroupName":"${resourcegroupName}"
         }
-    color: '#3d6c9e'
+    color: "#3d6c9e"
   - phase: Autoconfigure Release
     tasks:
     - name: Live deployment configuration input
       type: xlrelease.UserInputTask
       description: Enter desired name for your application configuration.
       variables:
-        - liveDeploymentConfigurationName
+      - liveDeploymentConfigurationName
     - name: Create live deployment configuration
       type: xlrelease.ScriptTask
       description: Creates configuration item to follow onboarded application.
       script: |-
         from com.xebialabs.xlrelease.domain import Configuration
         from com.xebialabs.deployit.plugin.api.reflect import Type
-        
+
         liveDeploymentConfiguration = Configuration()
         liveDeploymentConfiguration.type = Type.valueOf("deploy.DeploymentConfig")
         liveDeploymentConfiguration.title = "${liveDeploymentConfigurationName}"
         liveDeploymentConfiguration.folderId = getCurrentFolder().getId()
         liveDeploymentConfiguration.setProperty("application", "Applications/${applicationName}")
         liveDeploymentConfiguration.setProperty("environment", "Environments/${environmentName}")
-        
+
         liveDeploymentConfiguration = configurationApi.addConfiguration(liveDeploymentConfiguration)
-        
+
         releaseVariables['liveDeploymentConfigurationId'] = liveDeploymentConfiguration.getId()
     - name: Setup deployment server
       type: xlrelease.ScriptTask
@@ -183,15 +187,15 @@ spec:
         to deployment server.
       script: |-
         from com.xebialabs.xlrelease.api.v1.forms import DeploymentServerSetup
-        
+
         folderId = getCurrentFolder().getId()
         configId = releaseVariables['liveDeploymentConfigurationId']
         serverId = releaseVariables['deployServer']
-        
+
         deploymentServerSetup = DeploymentServerSetup(folderId, serverId, configId)
-        
+
         statusWebhookEventSourceId = deploymentServerApi.setupDeploymentServer(deploymentServerSetup)
-        
+
         releaseVariables['statusWebhookEventSourceId'] = statusWebhookEventSourceId
     - name: Autoconfigure deployment server
       type: xlrelease.ScriptTask
@@ -199,7 +203,7 @@ spec:
         notifications.
       script: |-
         autoConfigResponse = deploymentServerApi.autoconfigureDeploymentServer("${statusWebhookEventSourceId}")
-        
+
         releaseVariables['autoconfigMessage'] = autoConfigResponse.message
         releaseVariables['autoconfigUrl'] = autoConfigResponse.url
         releaseVariables['autoconfigDetails'] = autoConfigResponse.details
@@ -207,7 +211,7 @@ spec:
       type: xlrelease.Task
       description: |-
         ${autoconfigMessage}
-        
+
         [View in Deploy](${autoconfigUrl})
     color: "#3d6c9e"
   kind: WORKFLOW
@@ -298,5 +302,5 @@ spec:
   logo:
     type: xlrelease.TemplateLogo
     contentType: image/svg+xml
-    file: !file "template-logo/97662a62108c2b1e1875c8e18f6d1c72a013d33c/deploy.svg"
+    file: !file "template-logo/e937292a6e97a39f3288f478e55578b7efff9ec5/deploy.svg"
   defaultTargetFolder: Digital.ai - Official/Workflow Executions

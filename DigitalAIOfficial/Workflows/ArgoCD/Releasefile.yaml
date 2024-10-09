@@ -1,13 +1,18 @@
+# Exported from:        http://localhost:5516/
+# Release version:      24.3.0-1009.113
+# Date created:         Wed Oct 09 12:48:29 GMT 2024
+
 ---
 apiVersion: xl-release/v1
 kind: Import
 spec:
   imports:
-  - Workflow_ArgoCD delete application.yaml
+  - Permissions.yaml
   - Workflow_Argo Rollouts install.yaml
+  - Workflow_ArgoCD delete application.yaml
+  - Workflow_ArgoCD delete live deployment configuration.yaml
   - Workflow_ArgoCD install.yaml
   - Workflow_ArgoCD setup application.yaml
-  - Workflow_ArgoCD update application.yaml
   - Workflow_ArgoCD setup deployment server.yaml
   - Workflow_ArgoCD setup live deployment configuration.yaml
-  - Workflow_ArgoCD delete live deployment configuration.yaml
+  - Workflow_ArgoCD update application.yaml

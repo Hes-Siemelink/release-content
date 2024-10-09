@@ -1,3 +1,7 @@
+# Exported from:        http://localhost:5516/
+# Release version:      24.3.0-1009.113
+# Date created:         Wed Oct 09 12:48:29 GMT 2024
+
 ---
 apiVersion: xl-release/v1
 kind: Templates
@@ -6,7 +10,9 @@ metadata:
   home: Digital.ai - Official/Workflows/Digital.ai Deploy
 spec:
 - template: Deploy setup live deployment configuration
-  description: "Create or update Deploy live deployment configuration"
+  description: Create or update Deploy live deployment configuration
+  scheduledStartDate: 2024-10-09T07:38:14.738Z
+  dueDate: 2024-10-09T08:38:14.738Z
   phases:
   - phase: Input
     tasks:
@@ -37,12 +43,12 @@ spec:
       - liveDeploymentConfigurationName
     - name: Live deployment configuration filter
       type: xlrelease.UserInputTask
-      description: Input the Deploy application and environment filter to select applications from
-        the deployment server for live deployments.
+      description: Input the Deploy application and environment filter to select applications
+        from the deployment server for live deployments.
       variables:
       - liveDeploymentConfigurationApplication
       - liveDeploymentConfigurationEnvironment
-    color: '#3d6c9e'
+    color: "#3d6c9e"
   - phase: Autoconfiguration
     tasks:
     - name: Create or update live deployment configuration
@@ -83,7 +89,7 @@ spec:
       description: Creates webhook configuration CIs on Deploy Server.
       script: |-
         from java.lang import Throwable
-        
+
         try:
           autoconfigResponse = deploymentServerApi.autoconfigureDeploymentServer("${statusWebhookEventSourceId}")
           releaseVariables['autoconfigMessage'] = autoconfigResponse.message
@@ -100,14 +106,14 @@ spec:
         ${autoconfigMessage}
 
         [View in Deploy](${autoconfigUrl})
-    color: '#3d6c9e'
+    color: "#3d6c9e"
   kind: WORKFLOW
-  categories:
-    - Application onboarding
   tags:
-    - Remote Deploy
-    - deployment server
-    - config
+  - Remote Deploy
+  - deployment server
+  - config
+  categories:
+  - Application onboarding
   variables:
   - type: xlrelease.StringVariable
     key: statusWebhookEventSourceId
@@ -156,5 +162,5 @@ spec:
   logo:
     type: xlrelease.TemplateLogo
     contentType: image/svg+xml
-    file: !file "template-logo/97662a62108c2b1e1875c8e18f6d1c72a013d33c/deploy.svg"
+    file: !file "template-logo/e348758a56b29be78e831147c0a5c85e345b4b88/deploy.svg"
   defaultTargetFolder: Digital.ai - Official/Workflow Executions

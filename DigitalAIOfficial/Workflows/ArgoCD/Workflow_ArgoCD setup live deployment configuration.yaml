@@ -1,3 +1,7 @@
+# Exported from:        http://localhost:5516/
+# Release version:      24.3.0-1009.113
+# Date created:         Wed Oct 09 12:48:29 GMT 2024
+
 ---
 apiVersion: xl-release/v1
 kind: Templates
@@ -6,7 +10,9 @@ metadata:
   home: Digital.ai - Official/Workflows/ArgoCD
 spec:
 - template: ArgoCD setup live deployment configuration
-  description: "Create or update ArgoCD live deployment configuration"
+  description: Create or update ArgoCD live deployment configuration
+  scheduledStartDate: 2024-10-09T07:38:13.693Z
+  dueDate: 2024-10-09T08:38:13.693Z
   phases:
   - phase: Input
     tasks:
@@ -40,7 +46,7 @@ spec:
         the deployment server for live deployments.
       variables:
       - liveDeploymentConfigurationApplication
-    color: '#3d6c9e'
+    color: "#3d6c9e"
   - phase: Autoconfiguration
     tasks:
     - name: Create or update live deployment configuration
@@ -90,14 +96,14 @@ spec:
           if "Cannot find active remote runner" in str(e):
             raise Exception("Failed to find active remote runner for executing container script.")
           raise
-    color: '#3d6c9e'
+    color: "#3d6c9e"
   kind: WORKFLOW
-  categories:
-    - Application onboarding
   tags:
-    - Remote ArgoCD
-    - deployment server
-    - config
+  - Remote ArgoCD
+  - deployment server
+  - config
+  categories:
+  - Application onboarding
   variables:
   - type: xlrelease.StringVariable
     key: statusWebhookEventSourceId
@@ -132,5 +138,5 @@ spec:
   logo:
     type: xlrelease.TemplateLogo
     contentType: image/png
-    file: !file "template-logo/c9e27d5b1d5ed9738d58781439732acacd6b482d/argocd.svg"
+    file: !file "template-logo/e910f9df14912b9b3fb5ed0c54044b8d1a8fd710/argocd.svg"
   defaultTargetFolder: Digital.ai - Official/Workflow Executions

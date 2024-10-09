@@ -1,3 +1,7 @@
+# Exported from:        http://localhost:5516/
+# Release version:      24.3.0-1009.113
+# Date created:         Wed Oct 09 12:48:28 GMT 2024
+
 ---
 apiVersion: xl-release/v1
 kind: Templates
@@ -10,8 +14,8 @@ spec:
     institution. It shows the various compliance and governance checks before each
     deployment gate and also the artifact certification process to ensure the right
     artifact is deployed.**'
-  scheduledStartDate: 2018-03-08T19:30:00+05:30
-  dueDate: 2018-03-08T20:30:00+05:30
+  scheduledStartDate: 2018-03-08T14:00:00Z
+  dueDate: 2018-03-08T15:00:00Z
   phases:
   - phase: dev
     tasks:
@@ -261,8 +265,8 @@ spec:
       tasks:
       - name: Artifactory API key generation
         type: xlrelease.SequentialGroup
-        description: '### This task will generate encrypted API key that can be used
-          in the fetch artifact version script tasks of this release template'
+        description: "### This task will generate encrypted API key that can be used\
+          \ in the fetch artifact version script tasks of this release template"
         tasks:
         - name: GET
           type: webhook.JsonWebhook
@@ -1039,7 +1043,7 @@ spec:
 
           - #### Refer release pipeline below for more info via 2 available options (flow view , table view):
           ${delivery_pipeline_url}
-    color: '#009CDB'
+    color: "#009CDB"
   - phase: pre-prod
     tasks:
     - name: Acknowledge/sign off release code quality metrics
@@ -1285,8 +1289,8 @@ spec:
       tasks:
       - name: Artifactory API key generation
         type: xlrelease.SequentialGroup
-        description: '### This task will generate encrypted API key that can be used
-          in the fetch artifact version script tasks of this release template'
+        description: "### This task will generate encrypted API key that can be used\
+          \ in the fetch artifact version script tasks of this release template"
         tasks:
         - name: GET
           type: webhook.JsonWebhook
@@ -2066,7 +2070,7 @@ spec:
 
           - #### Refer release pipeline below for more info via 2 available options (flow view , table view):
           ${delivery_pipeline_url}
-    color: '#009CDB'
+    color: "#009CDB"
   - phase: prod
     tasks:
     - name: Acknowledge/sign off release code quality metrics
@@ -2312,8 +2316,8 @@ spec:
       tasks:
       - name: Artifactory API key generation
         type: xlrelease.SequentialGroup
-        description: '### This task will generate encrypted API key that can be used
-          in the fetch artifact version script tasks of this release template'
+        description: "### This task will generate encrypted API key that can be used\
+          \ in the fetch artifact version script tasks of this release template"
         tasks:
         - name: GET
           type: webhook.JsonWebhook
@@ -2394,7 +2398,7 @@ spec:
       tasks:
       - name: Confirm target release CRQ number
         type: xlrelease.UserInputTask
-        description: '#### Please confirm CRQ number of this release'
+        description: "#### Please confirm CRQ number of this release"
         tags:
         - key_process_step
         variables:
@@ -3675,7 +3679,7 @@ spec:
 
           - #### Refer release pipeline below for more info via 2 available options (flow view , table view):
           ${delivery_pipeline_url}
-    color: '#009CDB'
+    color: "#009CDB"
   realFlagStatus: ATTENTION_NEEDED
   variables:
   - type: xlrelease.StringVariable
@@ -3695,7 +3699,7 @@ spec:
   - type: xlrelease.StringVariable
     key: MANUAL-ENTRY-SECTION-END
     requiresValue: false
-    value: '######################################'
+    value: "######################################"
   - type: xlrelease.StringVariable
     key: ENV-SECTION-START
     requiresValue: false
@@ -3738,7 +3742,7 @@ spec:
   - type: xlrelease.StringVariable
     key: ENV-SECTION-END
     requiresValue: false
-    value: '######################################'
+    value: "######################################"
   - type: xlrelease.StringVariable
     key: TOWER-SECTION-START
     requiresValue: false
@@ -3782,7 +3786,7 @@ spec:
   - type: xlrelease.StringVariable
     key: TOWER-SECTION-END
     requiresValue: false
-    value: '######################################'
+    value: "######################################"
   - type: xlrelease.StringVariable
     key: ARTIFACTORY-SECTION-START
     requiresValue: false
@@ -3801,7 +3805,7 @@ spec:
   - type: xlrelease.StringVariable
     key: ARTIFACTORY-SECTION-END
     requiresValue: false
-    value: '######################################'
+    value: "######################################"
   - type: xlrelease.StringVariable
     key: EMAIL-SECTION-START
     requiresValue: false
@@ -3824,7 +3828,7 @@ spec:
   - type: xlrelease.StringVariable
     key: EMAIL-SECTION-END
     requiresValue: false
-    value: '######################################'
+    value: "######################################"
   - type: xlrelease.StringVariable
     key: GATES-SECTION-START
     requiresValue: false
@@ -3872,7 +3876,7 @@ spec:
   - type: xlrelease.StringVariable
     key: GATES-SECTION-END
     requiresValue: false
-    value: '######################################'
+    value: "######################################"
   - type: xlrelease.StringVariable
     key: JIRA-SECTION-START
     requiresValue: false
@@ -3900,7 +3904,7 @@ spec:
   - type: xlrelease.StringVariable
     key: JIRA-SECTION-END
     requiresValue: false
-    value: '######################################'
+    value: "######################################"
   - type: xlrelease.StringVariable
     key: REMEDY-SECTION-START
     requiresValue: false
@@ -3920,7 +3924,7 @@ spec:
   - type: xlrelease.StringVariable
     key: REMEDY-SECTION-END
     requiresValue: false
-    value: '######################################'
+    value: "######################################"
   - type: xlrelease.StringVariable
     key: LITMUS-SECTION-START
     requiresValue: false
@@ -3950,7 +3954,7 @@ spec:
   - type: xlrelease.StringVariable
     key: LITMUS-SECTION-END
     requiresValue: false
-    value: '######################################'
+    value: "######################################"
   - type: xlrelease.StringVariable
     key: SONAR-SECTION-START
     requiresValue: false
@@ -3968,11 +3972,11 @@ spec:
   - type: xlrelease.StringVariable
     key: SONAR-SECTION-END
     requiresValue: false
-    value: '######################################'
+    value: "######################################"
   - type: xlrelease.StringVariable
     key: DEFAULT-VALUES-START
     requiresValue: false
-    value: '#############DEFAULT VALUES#############'
+    value: "#############DEFAULT VALUES#############"
   - type: xlrelease.StringVariable
     key: osPlatform
     requiresValue: false
@@ -3990,7 +3994,7 @@ spec:
   - type: xlrelease.StringVariable
     key: DEFAULT-VALUES-END
     requiresValue: false
-    value: '######################################'
+    value: "######################################"
   - type: xlrelease.StringVariable
     key: xlr_remedy_workinfo_creator
     requiresValue: false

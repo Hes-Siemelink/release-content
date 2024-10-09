@@ -1,6 +1,11 @@
+# Exported from:        http://localhost:5516/
+# Release version:      24.3.0-1009.113
+# Date created:         Wed Oct 09 12:48:29 GMT 2024
+
 ---
 apiVersion: xl-release/v1
 kind: Import
 spec:
   imports:
-  - Workflow_Azure Container Registry list images.yaml
+  - Permissions.yaml
+  - Workflow_List Azure Container Registry Images.yaml
