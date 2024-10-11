@@ -1,6 +1,6 @@
 # Exported from:        http://localhost:5516/
 # Release version:      24.3.0-1009.113
-# Date created:         Wed Oct 09 13:29:33 GMT 2024
+# Date created:         Fri Oct 11 11:16:45 GMT 2024
 
 ---
 apiVersion: xl-release/v1
@@ -16,9 +16,9 @@ spec:
   phases:
   - phase: Delete live deployment config
     tasks:
-    - name: Delete live deployment configuration
+    - name: Configure Digital.ai Release
       type: xlrelease.ScriptTask
-      description: Deletes deployment configuration from event source and from system.
+      description: Deleting Live Deployment configuration
       script: |-
         from com.xebialabs.xlrelease.domain import Configuration
         from com.xebialabs.deployit.plugin.api.reflect import Type
@@ -37,8 +37,9 @@ spec:
           statusWebhookEventSource.setProperty("liveDeploymentConfigs", liveDeploymentConfigs)
           configurationApi.updateConfiguration("${statusWebhookEventSourceId}", statusWebhookEventSource)
           configurationApi.deleteConfiguration(configToDelete.id)
-    - name: Autoconfigure deployment server
+    - name: Configure Digital.ai Deploy
       type: xlrelease.ScriptTask
+      description: Deleting webhook configuration from Digital.ai Deploy
       script: |-
         from java.lang import Throwable
 
@@ -50,12 +51,12 @@ spec:
           if "Cannot find active remote runner" in str(e):
             raise Exception("Failed to find active remote runner for executing container script.")
           raise
-    - name: Autoconfig response
+    - name: Configuration successful
       type: xlrelease.Task
       description: |-
         ${autoconfigMessage}
 
-        [View in Deploy](${autoconfigUrl})
+        [View configuration in Deploy](${autoconfigUrl})
     color: "#3d6c9e"
   kind: WORKFLOW
   tags:

@@ -1,6 +1,6 @@
 # Exported from:        http://localhost:5516/
 # Release version:      24.3.0-1009.113
-# Date created:         Wed Oct 09 13:29:32 GMT 2024
+# Date created:         Fri Oct 11 11:16:45 GMT 2024
 
 ---
 apiVersion: xl-release/v1
@@ -15,8 +15,9 @@ spec:
   phases:
   - phase: Delete Application in Deploy
     tasks:
-    - name: Fetch details
+    - name: Get configuration details
       type: xlrelease.ScriptTask
+      description: Getting configuration details of the target deployment server.
       script: |-
         from com.xebialabs.xlrelease.domain.environments import LiveDeployment
 
@@ -33,15 +34,18 @@ spec:
         releaseVariables['applicationName'] = applicationName
         releaseVariables['environmentName'] = environmentName
         releaseVariables['server'] = statusWebhookEventSource["sourceServer"].id
-    - name: Application Details
+    - name: Application details
       type: xlrelease.UserInputTask
-      description: Please enter the required information for application you want
-        to delete.
+      description: |-
+        Please enter the application you want to delete.
+
+        The application will also be undeployed
       variables:
       - server
       - deployedApplication
-    - name: Undeploy Application in Deploy
+    - name: Undeploy application in Deploy
       type: deploy.Undeploy
+      description: "Undeploying **${deployedApplication}**"
       variableMapping:
         server: "${server}"
       capabilities:
@@ -52,10 +56,9 @@ spec:
       numberOfPollingTrials: 0
       displayStepLogs: true
       connectionRetries: 10
-    - name: Delete deployment configuration
+    - name: Delete configuration
       type: xlrelease.ScriptTask
-      description: Deletes deployment configuration from event source if it matches
-        the deleted application.
+      description: Deleting  configuration from Digital.ai Release
       script: |-
         statusWebhookEventSource = configurationApi.getConfiguration("${statusWebhookEventSourceId}")
         liveDeploymentConfigs = statusWebhookEventSource.getProperty("liveDeploymentConfigs")

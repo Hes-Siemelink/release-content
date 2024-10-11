@@ -1,6 +1,6 @@
 # Exported from:        http://localhost:5516/
 # Release version:      24.3.0-1009.113
-# Date created:         Wed Oct 09 13:29:33 GMT 2024
+# Date created:         Fri Oct 11 11:16:47 GMT 2024
 
 ---
 apiVersion: xl-release/v1
@@ -16,9 +16,9 @@ spec:
   phases:
   - phase: Input
     tasks:
-    - name: Get details
+    - name: Get configuration details
       type: xlrelease.ScriptTask
-      description: Getting details of the deployment server.
+      description: Getting configuration details of the target deployment server.
       script: |-
         statusWebhookEventSource = configurationApi.getConfiguration("${statusWebhookEventSourceId}")
         sourceServer = statusWebhookEventSource["sourceServer"]
@@ -36,7 +36,7 @@ spec:
     - name: Live deployment configuration name
       type: xlrelease.UserInputTask
       description: |-
-        Enter a name for the deployment configuration.
+        Enter a name for the configuration.
 
         You will choose which deployments to listen to in the next steps.
 
@@ -46,22 +46,27 @@ spec:
     - name: Select deployments
       type: xlrelease.UserInputTask
       description: |-
-        Please give the full path to the Applications and Environments on the Deploy server you want to listen to.
+        Please give the full path to the applications and environments on the Deploy server you want to listen to.
 
-        For example, with `Applications/My  folder/My app`, Release will listen to all deployments of **My app** in **My folder**. With `Environments/Targets/DEV`, Release will listen to all deployments to the **DEV** environment in the **Targets** folder.
+        For example:
+        > **Application**
+        > `Applications/My  folder/My app` --  only listen to deployments of **My app**  from **My folder**
+        >
+        > **Environment**
+        > `Environments/Targets/DEV` --  only listen to  deployments to the **DEV** environment in the **Targets** folder.
 
         You can also listen to multiple applications and environments by using regular expressions.
 
-        For example, `.*` listens to all applications or environments.
+        For example, the combination `Applications/.*` with `Environments/.*` will listen to all deployments: from any application to any environment.
       variables:
       - liveDeploymentConfigurationApplication
       - liveDeploymentConfigurationEnvironment
     color: "#3d6c9e"
-  - phase: Autoconfiguration
+  - phase: Configuration
     tasks:
-    - name: Update configuration
+    - name: Configure Digital.ai Release
       type: xlrelease.ScriptTask
-      description: "Updating live deployment configuration for **${liveDeploymentConfigurationName}**"
+      description: "Configuring **${liveDeploymentConfigurationName}**"
       script: |-
         from com.xebialabs.xlrelease.domain import Configuration
         from com.xebialabs.deployit.plugin.api.reflect import Type
@@ -93,7 +98,7 @@ spec:
           configurationApi.updateConfiguration("${statusWebhookEventSourceId}", statusWebhookEventSource)
     - name: Configure Digital.ai Deploy
       type: xlrelease.ScriptTask
-      description: "Creating webhook configuration on **${targetServerTitle}**"
+      description: "Configuring webhooks  on **${targetServerTitle}**"
       script: |-
         from java.lang import Throwable
 
@@ -106,7 +111,7 @@ spec:
             raise Exception("Failed to find active remote runner for executing container script.")
           raise
     color: "#3d6c9e"
-  - phase: Final
+  - phase: Confirmation
     tasks:
     - name: Configuration successful
       type: xlrelease.Task
@@ -137,14 +142,16 @@ spec:
     key: liveDeploymentConfigurationApplication
     showOnReleaseStart: false
     label: Application
-    description: Application/directory path/regex in Digital.ai Deploy
-    value: .*
+    description: Application path in Digital.ai Deploy. You may enter a regular expression
+      here.
+    value: Applications/.*
   - type: xlrelease.StringVariable
     key: liveDeploymentConfigurationEnvironment
     showOnReleaseStart: false
     label: Environment
-    description: Environment/directory path/regex in Digital.ai Deploy
-    value: .*
+    description: Environment path in Digital.ai Deploy. You may enter a regular expression
+      here.
+    value: Environments/.*
   - type: xlrelease.StringVariable
     key: targetServerTitle
     requiresValue: false
